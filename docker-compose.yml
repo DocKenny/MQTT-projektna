@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  # Start Mosquitto MQTT
+  mosquitto:
+    image: eclipse-mosquitto   # Image for Mosquitto
+    container_name: MQTT-projektna  # Container name
+    restart: unless-stopped    # Automatically restart unless stopped manually
+    ports:
+      - "1883:1883"            # MQTT default port (TCP)
+      - "9001:9001"            # WebSockets port
+    volumes:                   # Mounts for configuration and persistence
+      - ./data_mosquitto/config:/mosquitto/config        # Mosquitto config folder
+      - ./data_mosquitto/data:/mosquitto/data            # Data folder for persistence
+      - ./data_mosquitto/log:/mosquitto/log              # Log folder
+      - ./data_mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf  # Mosquitto config file
+    networks:
+      - mqtt-net               # Define the network
+
+networks:
+  mqtt-net:                    # Create network named mqtt-net
+    name: mqtt-net
